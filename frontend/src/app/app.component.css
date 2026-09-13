@@ -1,0 +1,84 @@
+
+.baslik_div {
+  width: 100%;
+  height: 55px;
+  background-color: #b6b6ea;
+  display: flex;
+  align-items: center; /* Dikey hizalama ortalanır */
+  justify-content: space-between; /* Öğeler sağa ve sola yaslanır */
+  position: fixed; /* Sabit konum, ekran kaydırılsa da yerinde kalır */
+  top: 0;
+  left: 0;
+  padding: 0 20px; /* Yatayda 20px iç boşluk */
+}
+
+
+.kolon {
+  font-weight: bold;
+  padding: 10px; /* İç boşluk */
+}
+
+/* Ortadaki başlık stilini belirler */
+.orta {
+  position: absolute; /* Mutlak konumlandırma */
+  left: 35%;
+  font-size: 25px;
+  color: #6e6d6d;
+}
+
+.sol {
+  font-weight: bold;
+}
+
+
+.sag {
+  font-weight: bold;
+}
+.data {
+  position: absolute;
+  top: 55px; /* Başlık yüksekliği kadar yukarıdan başlasın */
+  left: 10%; /* Menü genişliği kadar soldan başlasın */
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  font-size: 25px;
+  color: #6e6d6d;
+  overflow: auto; /* İçerik taşarsa kaydırılabilir */
+}
+
+/* Sol tarafta yer alan dikey menüyü */
+.menu {
+  background-color: #1e1e2f;
+  padding: 20px 10px;
+  width: 10%;
+  height: 100%;
+  display: flex; /* Flexbox ile düzen */
+  flex-direction: column; /* Öğeleri dikey sırala */
+  align-items: flex-start; /* Öğeleri sola hizala */
+  position: fixed;
+  top: 55px; /* Üst başlıktan hemen sonra başlasın */
+  left: 0; /* Sol kenarda sabitlenir */
+  z-index: 999; /* Diğer öğelerin üstünde görünmesini sağlar */
+}
+
+/* Menüdeki listeyi sıfırlar */
+.menu ul {
+  list-style: none; /* Liste işaretlerini kaldırır */
+  margin: 0; /* Dış boşluk yok */
+  padding: 0; /* İç boşluk yok */
+  width: auto; /* Otomatik genişlik */
+}
+
+/* Her bir menü öğesinin boşluğunu ayarlar */
+.menu li {
+  margin: 15px 0; /* Üst ve alt boşluk */
+}
+
+/* Menü bağlantılarını stillendirir */
+.menu a {
+  text-decoration: none; /* Altı çizili yapmaz */
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 18px;
+  position: relative; /* Konumlandırma için gerekli */
+}

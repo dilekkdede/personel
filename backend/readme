@@ -1,0 +1,28 @@
+
+1)Şehir, birim vs. eklemede dropDown ile listeleme yapılacak (+)
+2)Silme işlemlerine uyarı getir
+
+2)dÜZENLE kısmında birim şehir. vs isim olarak gelisn. o ekran daha büyük olsun (+)
+2)Main copmanenet oluşturulacak. Menüde Anasafa olacak. Uygulama ilk açıldığıda anasayfa g4elecek(+) (+)
+3)Birim adı birim kodu ve toplam personel sayısı.( querisi yazılacak- postmnden çekilecek (Parametreriz) primeNg(+)
+4)Yazılan qoeryi fontendte chat.Js altındaki Pie ile görüntüle . İlk sayfa açıldığında mainde gelsin.
+5)Main 4 bölüme ayrılacak(onu da primeNg de yap) ilk bölüme pie gelecek , (+)
+6)ikinci pencereye Chart,jsteki basic gelsin. Ordada şehir ve şehirde kaç insan yaşadığı. aynı şekilde querysi,backendi yaz.(+)
+6)Personel ekranında liste ekranı ve edit ekranları olacak. Yeni bir copmanent personel add olacak orada kayıt işlemş ve güncelleme orada olacak
+6)todo da örnek al.
+7)Personel düzenle kısmı açıldığında saya büyük olsun. En alt kısma üç tab eklenecek(PrimeNg)-> bir tab: öğrenim bilgisi , ikinci tab:Adres bilgisi
+üçncü tab:Contact.
+Tablar açıldığında;
+
+
+!!BİTİRTİKCE İŞRATLE CE COMİTLEMEYİ UNUTMA
+
+
+  YENİ GÖREVLER:
+Adres ekleme personel save kısmında olmayacak backend ve frontentden kaldır.
+adres ekleme, silme, güncellem butonları düzenle ekranında gelecek. (adres classında)
+adres ekleme kısmında  text area kullanılacak.
+Popup çarpıya basmadan kapanmasın (araştır bir özellik)
+
+
+GitHub kurulumu yapıldı

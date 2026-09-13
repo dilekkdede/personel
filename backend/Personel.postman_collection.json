@@ -1,0 +1,637 @@
+{
+	"info": {
+		"_postman_id": "6c4f6c53-f5ec-40f3-8ef2-5adb60f661e3",
+		"name": "Personel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42397983"
+	},
+	"item": [
+		{
+			"name": "query",
+			"item": [
+				{
+					"name": "personel-listesi",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-status/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-status",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-id2-id11",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-id2-id11/2/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-id2-id11",
+								"2",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-like-kullanimi",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-like-kullanimi/Ev",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-like-kullanimi",
+								"Ev"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-bolum",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-bolum-upper",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-bolum-LOWER",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-bolum-lower/MÜHENDİSLİK",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-bolum-lower",
+								"MÜHENDİSLİK"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-dogum-gunu",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dogumGunu\":\"2003-01-12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-dogum-gunu",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-dogum-gunu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-dogum-gunu-null",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-dogum-gunu-null",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-dogum-gunu-null"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-dogum-gunu-not-null",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-dogum-gunu-not-null",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-dogum-gunu-not-null"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-count",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-id-in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"id\":14\r\n    },\r\n    {\r\n        \"id\":15\r\n    },\r\n    {\r\n        \"id\":16\r\n    },\r\n    {\r\n        \"id\":1\r\n    },\r\n    {\r\n        \"id\":100\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-id-in",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-id-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "personel-listesi-count-status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-count-status/0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rest",
+								"api",
+								"personel",
+								"personel-listesi-count-status",
+								"0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":null,\r\n    \"firstName\":\"Caniko\",\r\n    \"lastName\":\"Kalmaz\",\r\n    \"userName\":\"cnk\",\r\n    \"createBy\":\"Dilek\",\r\n    \"description\":\"ik\",\r\n    \"status\":1,\r\n    \"createDate\":null,\r\n    \"bolum\":\"Elektrik\",\r\n    \"cityId\":11,\r\n    \"unitId\":4,\r\n    \"birthDate\":null\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/api/personel/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"personel",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/personel/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"personel",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET- İD",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/personel/get-id/35",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"personel",
+						"get-id",
+						"35"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/personel/delete/36",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"personel",
+						"delete",
+						"36"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"id\": 35,\r\n    \"firstName\": \"Bayram\",\r\n    \"lastName\": \"Ayık\",\r\n    \"userName\": \"Byrm_78\",\r\n    \"createBy\": \"Dilek\",\r\n    \"description\": \"Öğretim görevlisi\",\r\n    \"status\": 1,\r\n    \"createDate\": null,\r\n    \"bolum\": \"Mühendislik\",\r\n    \"cityId\": 11,\r\n    \"unitId\": 3,\r\n    \"birthDate\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/api/personel/update/35",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"personel",
+						"update",
+						"35"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adres post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":0,\r\n    \"personelId\":44,\r\n    \"description\":\"Ankara\",\r\n    \"status\":1,\r\n    \"createDate\":\"2021-11-14 13:06:14.344\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/api/adres/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"adres",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adres get All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/adres/get-all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"adres",
+						"get-all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adres GET id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/adres/get-id/9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"adres",
+						"get-id",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adres Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/adres/delete/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"adres",
+						"delete",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adres Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":33,\r\n    \"personelId\":21,\r\n    \"description\":\"VAN\",\r\n    \"status\":0,\r\n    \"createDate\":\"2025-02-21 12:33:59.369\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rest/api/adres/update/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"adres",
+						"update",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "city post",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get all city",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/city/get-all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"city",
+						"get-all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/city/find-id/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"city",
+						"find-id",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete city",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/api/city/delete/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"api",
+						"city",
+						"delete",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update city",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
