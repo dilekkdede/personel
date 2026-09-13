@@ -32,3 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 .idea/
+
+### Local secrets ###
+src/main/resources/application-local.properties
+.env
+.env.*
+!.env.example

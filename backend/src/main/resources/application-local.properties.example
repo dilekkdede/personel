@@ -1,0 +1,12 @@
+# Bu dosyayi ayni klasore application-local.properties olarak kopyala.
+# application-local.properties Git'e girmez.
+#
+# Calistirma:
+#   SPRING_PROFILES_ACTIVE=local ./mvnw spring-boot:run
+#
+# Postgres bu projeye ozel olmali: port 55432, database personel_dev.
+# Is / Apinizer Postgres'ine baglanma.
+
+spring.datasource.url=jdbc:postgresql://localhost:55432/personel_dev
+spring.datasource.username=postgres
+spring.datasource.password=personel_local

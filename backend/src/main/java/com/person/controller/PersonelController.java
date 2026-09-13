@@ -35,7 +35,7 @@ public class PersonelController {
         return personelServices.findById(id);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = "http://localhost:4300")
     @DeleteMapping(path = "/delete/{id}")
     public BaseResponse deleteById(@PathVariable(name = "id") Long id) {
         return personelServices.deleteById(id);

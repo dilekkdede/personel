@@ -1,12 +1,13 @@
 import {Injectable} from '@angular/core';
 import axios from 'axios';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddressService {
 
-  baseUrl: any = 'http://localhost:8080/rest/api';
+  baseUrl = environment.apiUrl;
 
   constructor() {
   }

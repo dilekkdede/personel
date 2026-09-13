@@ -23,12 +23,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-status/1",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-status/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -46,12 +46,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-id2-id11/2/11",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-id2-id11/2/11",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -70,12 +70,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-like-kullanimi/Ev",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-like-kullanimi/Ev",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -109,12 +109,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-bolum-lower/MÜHENDİSLİK",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-bolum-lower/MÜHENDİSLİK",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -141,12 +141,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-dogum-gunu",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-dogum-gunu",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -163,12 +163,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-dogum-gunu-null",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-dogum-gunu-null",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -185,12 +185,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-dogum-gunu-not-null",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-dogum-gunu-not-null",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -207,12 +207,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-count",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-count",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -238,12 +238,12 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-id-in",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-id-in",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -260,12 +260,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/rest/api/personel/personel-listesi-count-status/0",
+							"raw": "http://localhost:18080/rest/api/personel/personel-listesi-count-status/0",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "18080",
 							"path": [
 								"rest",
 								"api",
@@ -294,12 +294,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/rest/api/personel/save",
+					"raw": "http://localhost:18080/rest/api/personel/save",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -316,12 +316,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/personel/list",
+					"raw": "http://localhost:18080/rest/api/personel/list",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -338,12 +338,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/personel/get-id/35",
+					"raw": "http://localhost:18080/rest/api/personel/get-id/35",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -361,12 +361,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/personel/delete/36",
+					"raw": "http://localhost:18080/rest/api/personel/delete/36",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -393,12 +393,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/rest/api/personel/update/35",
+					"raw": "http://localhost:18080/rest/api/personel/update/35",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -425,12 +425,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/rest/api/adres/save",
+					"raw": "http://localhost:18080/rest/api/adres/save",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -447,12 +447,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/adres/get-all",
+					"raw": "http://localhost:18080/rest/api/adres/get-all",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -469,12 +469,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/adres/get-id/9",
+					"raw": "http://localhost:18080/rest/api/adres/get-id/9",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -492,12 +492,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/adres/delete/3",
+					"raw": "http://localhost:18080/rest/api/adres/delete/3",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -524,12 +524,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/rest/api/adres/update/4",
+					"raw": "http://localhost:18080/rest/api/adres/update/4",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -555,12 +555,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/city/get-all",
+					"raw": "http://localhost:18080/rest/api/city/get-all",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -577,12 +577,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/city/find-id/4",
+					"raw": "http://localhost:18080/rest/api/city/find-id/4",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
@@ -600,12 +600,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/rest/api/city/delete/4",
+					"raw": "http://localhost:18080/rest/api/city/delete/4",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "18080",
 					"path": [
 						"rest",
 						"api",
