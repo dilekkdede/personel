@@ -1,0 +1,50 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">İK</div>
+      <div>
+        <strong>Personel IK</strong>
+        <small>İnsan Kaynakları</small>
+      </div>
+    </div>
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active"><i class="pi pi-home"></i> Ana sayfa</a>
+      <a routerLink="/personel" routerLinkActive="active"><i class="pi pi-users"></i> Personel</a>
+      <a routerLink="/units" routerLinkActive="active"><i class="pi pi-sitemap"></i> Birimler</a>
+      <a routerLink="/cities" routerLinkActive="active"><i class="pi pi-map-marker"></i> Şehirler</a>
+      <a routerLink="/reports" routerLinkActive="active"><i class="pi pi-chart-bar"></i> Raporlar</a>
+      <a routerLink="/settings" routerLinkActive="active"><i class="pi pi-cog"></i> Ayarlar</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <div class="title">Personel İnsan Kaynakları Sistemi</div>
+        <div class="sub">{{ auth.isAdmin() ? 'Yönetici' : 'Görüntüleme' }} hesabı</div>
+        <nav class="mobile-nav">
+          <a routerLink="/dashboard" routerLinkActive="active">Ana sayfa</a>
+          <a routerLink="/personel" routerLinkActive="active">Personel</a>
+          <a routerLink="/units" routerLinkActive="active">Birimler</a>
+          <a routerLink="/cities" routerLinkActive="active">Şehirler</a>
+          <a routerLink="/reports" routerLinkActive="active">Raporlar</a>
+          <a routerLink="/settings" routerLinkActive="active">Ayarlar</a>
+        </nav>
+      </div>
+      <div class="userbox">
+        <p-button [icon]="theme.dark ? 'pi pi-sun' : 'pi pi-moon'" [rounded]="true" [text]="true"
+                  (onClick)="theme.setDark(!theme.dark)" title="Tema"></p-button>
+        <div>
+          <b>{{ auth.currentUser()?.firstName }} {{ auth.currentUser()?.lastName }}</b>
+          <small>{{ auth.currentUser()?.username }}</small>
+        </div>
+        <p-button label="Çıkış" severity="secondary" [outlined]="true" (onClick)="logout()"></p-button>
+      </div>
+    </header>
+    <section class="content">
+      <p-toast/>
+      <p-confirmDialog></p-confirmDialog>
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+</div>

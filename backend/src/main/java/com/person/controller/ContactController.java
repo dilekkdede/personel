@@ -6,8 +6,9 @@ import com.person.services.IContactServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
-@CrossOrigin(allowedHeaders = "*", origins = "*")
 @RequestMapping("/rest/api/contact")
 public class ContactController {
 
@@ -15,7 +16,7 @@ public class ContactController {
     private IContactServices contactServices;
 
     @PostMapping(path = "/save")
-    public BaseResponse save(@RequestBody ContactSaveDto dto) {
+    public BaseResponse save(@Valid @RequestBody ContactSaveDto dto) {
         return contactServices.save(dto);
     }
 
@@ -30,21 +31,17 @@ public class ContactController {
     }
 
     @DeleteMapping(path = "/delete/{id}")
-    BaseResponse deleteById(@PathVariable(name = "id") Long id) {
+    public BaseResponse deleteById(@PathVariable(name = "id") Long id) {
         return contactServices.deleteById(id);
     }
 
     @PutMapping(path = "/update/{id}")
-    public BaseResponse update(@PathVariable(name = "id") Long id, @RequestBody ContactSaveDto dto) {
-        return contactServices.update(id, dto
-        );
-
+    public BaseResponse update(@PathVariable(name = "id") Long id, @Valid @RequestBody ContactSaveDto dto) {
+        return contactServices.update(id, dto);
     }
 
-    @GetMapping(path = "/get-personel-ıd-contact/{id}")
+    @GetMapping(path = "/get-personel-id-contact/{id}")
     public BaseResponse findByIdPersonelContact(@PathVariable(name = "id") Long id) {
         return contactServices.findByIdPersonel(id);
     }
-
-
 }

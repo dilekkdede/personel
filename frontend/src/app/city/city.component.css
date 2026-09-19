@@ -1,20 +1,26 @@
-
-.header {
-  margin-top: 35px;
-  margin-bottom: 35px;
-}
-
-.tablo {
-  margin: 0px;
-  height: 100%;
+.form-stack {
   display: flex;
-  position: fixed;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.islem {
-  left: 1000px;
-  display: flex;
-  justify-content: flex-end;
-  width: 1650px;
+.form-stack label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--muted);
 }
 
+.form-stack input {
+  width: 100%;
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 28px !important;
+}

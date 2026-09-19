@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
-import {BrowserModule, provideClientHydration, withEventReplay} from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
+import {CommonModule} from '@angular/common';
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 
@@ -47,6 +48,10 @@ import {SplitterModule} from 'primeng/splitter';
 import {ConfirmationService} from 'primeng/api';
 import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
 import { ContactComponent } from './contact/contact.component';
+import { LoginComponent } from './login/login.component';
+import { ShellComponent } from './shell/shell.component';
+import { SettingsComponent } from './settings/settings.component';
+import { PersonelDetailComponent } from './personel-detail/personel-detail.component';
 
 @NgModule({
   declarations: [
@@ -60,9 +65,14 @@ import { ContactComponent } from './contact/contact.component';
     EducationComponent,
     MainComponent,
     ContactComponent,
+    LoginComponent,
+    ShellComponent,
+    SettingsComponent,
+    PersonelDetailComponent,
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
     ButtonModule,
@@ -102,10 +112,12 @@ import { ContactComponent } from './contact/contact.component';
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Aura
+        preset: Aura,
+        options: {
+          darkModeSelector: '.app-dark'
+        }
       }
-    }),
-    provideClientHydration(withEventReplay())
+    })
   ],
   bootstrap: [AppComponent]
 })

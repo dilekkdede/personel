@@ -14,7 +14,7 @@ export class ContactService {
   }
 
   async findByIdPersonelContact(id: number) {
-    const body = await apiBody(axios.get(this.baseUrl + '/contact/get-personel-ıd-contact/' + id));
+    const body = await apiBody(axios.get(this.baseUrl + '/contact/get-personel-id-contact/' + id));
     return body.data;
   }
 

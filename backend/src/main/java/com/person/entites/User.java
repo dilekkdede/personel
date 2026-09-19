@@ -1,7 +1,8 @@
 package com.person.entites;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.person.enums.Role;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,8 +27,16 @@ public class User implements Serializable {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "USER_NAME")
+    @Column(name = "USER_NAME", unique = true)
     private String userName;
+
+    @JsonIgnore
+    @Column(name = "PASSWORD")
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE")
+    private Role role;
 
     @Column(name = "CRE_BY")
     private String createBy;
@@ -38,7 +47,7 @@ public class User implements Serializable {
     @Column(name = "CRE_DATE")
     private Date createDate;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CITY_ID", referencedColumnName = "ID")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private City city;

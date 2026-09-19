@@ -1,0 +1,67 @@
+.login-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(900px 420px at 10% 0%, rgba(56, 189, 248, 0.18), transparent 50%),
+    radial-gradient(700px 380px at 100% 100%, rgba(45, 212, 191, 0.16), transparent 45%),
+    #0b1220;
+}
+
+.login-card {
+  width: min(420px, 92vw);
+  background: #111a2b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  padding: 32px;
+  color: #e8eef8;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
+.brand {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  background: linear-gradient(135deg, #22d3ee, #34d399);
+  color: #082018;
+}
+
+h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+p, label, .hint {
+  color: #9fb0c8;
+}
+
+label {
+  display: block;
+  margin: 14px 0 6px;
+  font-size: 13px;
+}
+
+input, :host ::ng-deep .p-password,
+:host ::ng-deep .p-password input {
+  width: 100%;
+}
+
+.login-btn {
+  margin-top: 22px;
+}
+
+.hint {
+  margin-top: 22px;
+  font-size: 12px;
+  line-height: 1.7;
+}

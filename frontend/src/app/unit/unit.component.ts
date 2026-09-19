@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UnitService} from '../services/unit.service';
 import {ConfirmationService, MessageService} from 'primeng/api';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-unit',
@@ -9,155 +10,99 @@ import {ConfirmationService, MessageService} from 'primeng/api';
   styleUrl: './unit.component.css'
 })
 export class UnitComponent implements OnInit {
-
-  birimler: any = [];
-  visible: boolean = false;
+  birimler: any[] = [];
+  visible = false;
+  saving = false;
   unitId: any = null;
-  isEditButton: boolean = false;
-  unitName: any = null;
-  unitCode: any = null;
+  isEditButton = false;
+  unitName = '';
+  unitCode = '';
 
+  constructor(private unitService: UnitService,
+              private messageService: MessageService,
+              private confirmationService: ConfirmationService,
+              public auth: AuthService) {
+  }
 
-  constructor(private unitService: UnitService, private messageService: MessageService,private confirmationService: ConfirmationService) {
-    //Dependcy Injection işlemi yapıldı. Yazmış olduğumuz servisin kullanılabilir hale gelmesi
+  ngOnInit(): void {
+    this.getData();
   }
 
   showDialog() {
     this.isEditButton = false;
     this.visible = true;
-    this.unitName = null;
-    this.unitCode = null;
+    this.unitName = '';
+    this.unitCode = '';
+    this.unitId = null;
   }
 
-  cancel(): void {
+  cancel() {
     this.visible = false;
   }
 
-
-  ngOnInit(): void {
-    //Angularda sayfa yüklendiğinde ilk çalışan fonksiyondur
-    this.getData();
+  getData() {
+    this.unitService.findAll().then(response => this.birimler = response || []);
   }
 
-
-  openDialog(): void {
-    console.log('openDialog');
+  private valid(): boolean {
+    if (!this.unitName?.trim() || !this.unitCode?.trim()) {
+      this.messageService.add({severity: 'warn', summary: 'Eksik bilgi', detail: 'Birim adı ve kodu zorunlu'});
+      return false;
+    }
+    return true;
   }
 
+  notify(response: any, successMessage: string) {
+    if (response.status === 200 || response.status === 201) {
+      this.visible = false;
+      this.getData();
+      this.messageService.add({severity: 'success', summary: 'Başarılı', detail: successMessage});
+    } else {
+      this.messageService.add({
+        severity: response.status === 409 ? 'warn' : 'error',
+        summary: 'İşlem başarısız',
+        detail: response.message || 'Kayıt yapılamadı'
+      });
+    }
+  }
 
   saveUnit() {
-    const unit = {
-      "id": null,
-      "name": this.unitName,
-      "code": this.unitCode,
+    if (!this.valid()) {
+      return;
     }
-
-    this.unitService.save(unit).then(response => {
-
-      if (response.status === 201) {
-        this.visible = false;
-        this.getData();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Başarılı',
-          detail: 'Başarılı bir şekilde kayıt yapıldı'
-        })
-      }
-      if (response.status === 400) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Başarısız',
-          detail: response.message
-        })
-      }
-    }).catch(error => {
-      console.log(error);
-    })
-  }
-
-  getData() {
-    this.unitService.findAll().then(response => {
-      this.birimler = response;
-    });
-  }
-
-
-  deleteUnit(unitId:any) {
-    this.unitService.delete(unitId).then(response => {
-      if (response.status === 200) {
-        this.visible = false;
-        this.getData();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Başarılı',
-          detail: 'Kayıt silindi'
-        })
-
-      }
-    }).catch(error => {
-      console.log(error);
-    })
-  }
-
-  confirmDelete(event: Event, unitId: any) {
-    this.confirmationService.confirm({
-      target: event.target as EventTarget,
-      message: 'silmek istediğinize emin misiniz!',
-      header: 'Danger Zone',
-      icon: 'pi pi-info-circle',
-      rejectLabel: 'Cancel',
-      rejectButtonProps: {
-        label: 'İptal',
-        severity: 'secondary',
-        outlined: true,
-      },
-      acceptButtonProps: {
-        label: 'Evet',
-        severity: 'danger',
-      },
-
-      accept: () => {
-        this.deleteUnit(unitId);
-      },
-      reject: () => {
-      },
-    });
+    this.saving = true;
+    this.unitService.save({name: this.unitName.trim(), code: this.unitCode.trim()})
+      .then(response => this.notify(response, 'Birim kaydedildi'))
+      .finally(() => this.saving = false);
   }
 
   editUnit(unit: any) {
     this.isEditButton = true;
     this.visible = true;
-    this.unitName = unit.name;
-    this.unitCode = unit.code;
+    this.unitName = unit.name || '';
+    this.unitCode = unit.code || '';
     this.unitId = unit.id;
   }
 
   updateUnit() {
-    this.visible = true;
-    const unit = {
-      "id": null,
-      "name": this.unitName,
-      "code": this.unitCode,
+    if (!this.valid()) {
+      return;
     }
-    this.unitService.update(this.unitId, unit).then(response => {
-      if (response.status === 200) {
-        this.visible = false;
-        this.getData();
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Başarılı',
-          detail: 'Başarılı bir şekilde güncellendi'
-        })
-      }
-      if (response.status === 400) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Başarısız',
-          detail: response.message
-        })
-      }
-    }).catch(error => {
-      console.log(error);
-    })
+    this.saving = true;
+    this.unitService.update(this.unitId, {id: this.unitId, name: this.unitName.trim(), code: this.unitCode.trim()})
+      .then(response => this.notify(response, 'Birim güncellendi'))
+      .finally(() => this.saving = false);
+  }
+
+  confirmDelete(event: Event, unitId: any) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Bu birimi silmek istediğinize emin misiniz?',
+      header: 'Silme onayı',
+      icon: 'pi pi-info-circle',
+      rejectButtonProps: {label: 'İptal', severity: 'secondary', outlined: true},
+      acceptButtonProps: {label: 'Sil', severity: 'danger'},
+      accept: () => this.unitService.delete(unitId).then(response => this.notify(response, 'Birim silindi'))
+    });
   }
 }

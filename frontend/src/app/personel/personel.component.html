@@ -1,157 +1,165 @@
-<p-toast/>
-<p-confirmDialog></p-confirmDialog>
-<div class="header" style="color:darkblue">
-  PERSONEL LİSTESİ
-  <p-button icon="pi pi-plus" title="Yeni Kayıt" [rounded]="true" [text]="true"
-            (click)="showDialog()" severity="info"/>
+<div class="page-head">
+  <div>
+    <h2>Personel</h2>
+    <p>Filtrele, detaya git, dışa aktar veya durumu değiştir.</p>
+  </div>
+  <div class="head-actions">
+    <p-button label="CSV indir" icon="pi pi-download" severity="secondary" [outlined]="true" (onClick)="exportCsv()"></p-button>
+    <p-button *ngIf="auth.isAdmin()" label="Yeni personel" icon="pi pi-plus" (onClick)="showDialog()"></p-button>
+  </div>
+</div>
 
-  <p-dialog header="Personel Ekle" [modal]="true" [(visible)]="visible"
-            [baseZIndex]="1000"
-            [style]="{ width: '50rem', height: '45rem',color:'blue' }">
+<p class="note" *ngIf="!auth.isAdmin()">Görüntüleme hesabındasın. Ekleme ve durum değiştirme için admin gerekir.</p>
 
-    <br/>
-    <p-inputgroup>
-      <p-floatlabel>
-        <input [style]="{ width: '100%' }" id="Adı" pInputText [(ngModel)]="personName"/>
-        <label for="Adı">Adı</label>
-      </p-floatlabel>
-      <div style="padding: 0.2rem;"></div>
-      <p-floatlabel>
-        <input [style]="{ width: '100%' }" id="Soyad" pInputText [(ngModel)]="personLastName"/>
-        <label for="Soyad">Soyadı</label>
-      </p-floatlabel>
-    </p-inputgroup>
-    <br/>
+<div class="filters panel">
+  <input pInputText [(ngModel)]="q" placeholder="Ad, soyad, kullanıcı" (keyup.enter)="load()"/>
+  <input pInputText [(ngModel)]="bolum" placeholder="Bölüm" (keyup.enter)="load()"/>
+  <p-select [options]="cities" [(ngModel)]="cityId" optionLabel="name" optionValue="id"
+            placeholder="Şehir" [showClear]="true" appendTo="body"></p-select>
+  <p-select [options]="units" [(ngModel)]="unitId" optionLabel="name" optionValue="id"
+            placeholder="Birim" [showClear]="true" appendTo="body"></p-select>
+  <p-select [options]="statusOptions" [(ngModel)]="employmentStatus" optionLabel="label" optionValue="value"
+            placeholder="Durum" [showClear]="true" appendTo="body"></p-select>
+  <p-button label="Filtrele" icon="pi pi-search" (onClick)="load()"></p-button>
+  <p-button label="Temizle" severity="secondary" [outlined]="true" (onClick)="clearFilters()"></p-button>
+</div>
 
-    <p-inputgroup>
-      <p-floatlabel>
-        <input [style]="{ width: '100%' }" id="kullanici_adi" pInputText [(ngModel)]="personUserName"/>
-        <label for="kullanici_adi">Kullanıcı Adı</label>
-      </p-floatlabel>
-      <div style="padding: 0.2rem;"></div>
-      <p-floatlabel>
-        <input [style]="{ width: '100%' }" id="bolum" pInputText [(ngModel)]="personBolum"/>
-        <label for="bolum">Bölüm</label>
-      </p-floatlabel>
-    </p-inputgroup>
-    <br/>
+<div class="bulk" *ngIf="auth.isAdmin() && selected.length">
+  <span>{{ selected.length }} kayıt seçildi</span>
+  <p-button label="Aktif yap" [outlined]="true" (onClick)="applyBulk('ACTIVE')"></p-button>
+  <p-button label="İzine al" [outlined]="true" (onClick)="applyBulk('ON_LEAVE')"></p-button>
+  <p-button label="Pasife al" severity="danger" [outlined]="true" (onClick)="applyBulk('LEFT')"></p-button>
+</div>
 
-    <p-inputgroup>
-      <p-floatlabel>
-        <p-dropdown
-          id="city"
-          [options]="cities"
-          [(ngModel)]="personCity_id"
-          optionLabel="name"
-          optionValue="id"
-          placeholder=""
-          [style]="{ width: '100%' }"
-        ></p-dropdown>
-        <label for="city">Şehir</label>
-      </p-floatlabel>
-      <div style="padding: 0.2rem;"></div>
-      <p-floatlabel>
-        <p-dropdown
-          id="unit"
-          [options]="units"
-          [(ngModel)]="personUnit_id"
-          optionLabel="code"
-          optionValue="id"
-          placeholder=""
-          [style]="{ width: '100%' }"
-        ></p-dropdown>
-        <label for="unit">Birim</label>
-      </p-floatlabel>
-    </p-inputgroup>
-    <br/>
+<div class="panel">
+  <p-table
+    [value]="personeller"
+    [(selection)]="selected"
+    dataKey="id"
+    [lazy]="true"
+    [paginator]="true"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    [loading]="loading"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    (onLazyLoad)="load($event)">
+    <ng-template pTemplate="header">
+      <tr>
+        <th *ngIf="auth.isAdmin()" style="width: 3rem"><p-tableHeaderCheckbox/></th>
+        <th>Ad</th>
+        <th>Soyad</th>
+        <th>Bölüm</th>
+        <th>Şehir</th>
+        <th>Birim</th>
+        <th>Durum</th>
+        <th>İşlem</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-personel>
+      <tr>
+        <td *ngIf="auth.isAdmin()"><p-tableCheckbox [value]="personel"/></td>
+        <td>{{ personel.firstName }}</td>
+        <td>{{ personel.lastName }}</td>
+        <td>{{ personel.bolum }}</td>
+        <td>{{ personel.city?.name }}</td>
+        <td>{{ personel.unit?.name || personel.unit?.code }}</td>
+        <td>
+          <span class="badge" [class.leave]="personel.employmentStatus === 'ON_LEAVE'"
+                [class.left]="personel.employmentStatus === 'LEFT'">
+            {{ statusLabel(personel.employmentStatus) }}
+          </span>
+        </td>
+        <td class="actions">
+          <p-button label="Detay" [text]="true" (onClick)="openDetail(personel)"></p-button>
+          <p-button *ngIf="auth.isAdmin()" label="Düzenle" icon="pi pi-pencil" [text]="true" (onClick)="edit(personel)"></p-button>
+          <p-button *ngIf="auth.isAdmin()" label="Pasife al" [text]="true" severity="danger"
+                    (onClick)="confirmLeave($event, personel)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="auth.isAdmin() ? 8 : 7" class="empty">
+          <ng-container *ngIf="hasFilter">Bu filtrelere uyan personel yok. Filtreleri temizleyip tekrar dene.</ng-container>
+          <ng-container *ngIf="!hasFilter">Henüz personel yok. Şehir ve birim ekledikten sonra kayıt aç.</ng-container>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [header]="isEditButton ? 'Personel düzenle' : 'Yeni personel'" [modal]="true" [(visible)]="visible"
+          appendTo="body" [dismissableMask]="true" [style]="{width: '48rem'}">
+  <div class="form-grid">
     <div>
-      <p-floatlabel>
-        <p-datepicker id="birth" [style]="{ width: '100%'}" [(ngModel)]="personBirthDay"
-                      [showIcon]="true" [showOnFocus]="false"></p-datepicker>
-        <label for="birth">Doğum Tarihi</label>
-      </p-floatlabel>
+      <label>Ad *</label>
+      <input pInputText [(ngModel)]="personName" [class.invalid]="invalid('name')"/>
+      <small *ngIf="invalid('name')" class="err">Ad zorunlu</small>
     </div>
-    <br/>
-    <p-inputgroup>
-      <p-floatlabel>
-        <textarea [style]="{ width: '100%'}" id="aciklama" rows="2" cols="30" pTextarea
-                  [(ngModel)]="personDescription"></textarea>
-        <label for="aciklama">Açıklama</label>
-      </p-floatlabel>
-    </p-inputgroup>
-
-    <p-tabs *ngIf="isEditButton" value="0">
-      <p-tablist>
-        <p-tab value="0">Adres</p-tab>
-        <p-tab value="1">İletişim</p-tab>
-      </p-tablist>
-
-
-      <p-tabpanels>
-        <p-tabpanel value="0">
-          <app-address *ngIf="personId" [personId]="personId"></app-address>
-        </p-tabpanel>
-        <p-tabpanel value="1">
-          <app-contact *ngIf="personId" [personId]="personId"></app-contact>
-        </p-tabpanel>
-      </p-tabpanels>
-    </p-tabs>
-
-
-    <br/>
-    <div style="float:right;">
-      <p-button label="İPTAL" severity="secondary" (onClick)="cancel()"/>
-      <p-button *ngIf="!isEditButton" [style]="{ margin:'2rem'}" (onClick)="save() ">KAYDET</p-button>
-      <p-button *ngIf="isEditButton" [style]="{ margin:'2rem'}" (onClick)="updatePerson()"> GÜNCELLE</p-button>
+    <div>
+      <label>Soyad *</label>
+      <input pInputText [(ngModel)]="personLastName" [class.invalid]="invalid('lastName')"/>
+      <small *ngIf="invalid('lastName')" class="err">Soyad zorunlu</small>
     </div>
+    <div>
+      <label>Kullanıcı adı</label>
+      <input pInputText [(ngModel)]="personUserName"/>
+    </div>
+    <div>
+      <label>Bölüm *</label>
+      <input pInputText [(ngModel)]="personBolum" [class.invalid]="invalid('bolum')"/>
+      <small *ngIf="invalid('bolum')" class="err">Bölüm zorunlu</small>
+    </div>
+    <div>
+      <label>Şehir *</label>
+      <p-select [options]="cities" [(ngModel)]="personCity_id" optionLabel="name" optionValue="id"
+                placeholder="Şehir seç" appendTo="body" [style]="{width:'100%'}"
+                [styleClass]="invalid('city') ? 'invalid' : ''"></p-select>
+      <small *ngIf="invalid('city')" class="err">Şehir seç</small>
+    </div>
+    <div>
+      <label>Birim *</label>
+      <p-select [options]="units" [(ngModel)]="personUnit_id" optionLabel="name" optionValue="id"
+                placeholder="Birim seç" appendTo="body" [style]="{width:'100%'}"></p-select>
+      <small *ngIf="invalid('unit')" class="err">Birim seç</small>
+    </div>
+    <div>
+      <label>Durum</label>
+      <p-select [options]="statusOptions" [(ngModel)]="personStatus" optionLabel="label" optionValue="value"
+                appendTo="body" [style]="{width:'100%'}"></p-select>
+    </div>
+    <div>
+      <label>Doğum tarihi</label>
+      <p-datepicker [(ngModel)]="personBirthDay" [showIcon]="true" appendTo="body" [style]="{width:'100%'}"></p-datepicker>
+    </div>
+    <div class="full">
+      <label>Açıklama</label>
+      <textarea pTextarea [(ngModel)]="personDescription" rows="2"></textarea>
+    </div>
+    <div class="full" *ngIf="!isEditButton">
+      <label>Adres</label>
+      <textarea pTextarea [(ngModel)]="personAdresDescription" rows="2"></textarea>
+    </div>
+  </div>
 
-  </p-dialog>
-</div>
+  <p-tabs *ngIf="isEditButton" value="0">
+    <p-tablist>
+      <p-tab value="0">Adres</p-tab>
+      <p-tab value="1">İletişim</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <app-address *ngIf="personId" [personId]="personId"></app-address>
+      </p-tabpanel>
+      <p-tabpanel value="1">
+        <app-contact *ngIf="personId" [personId]="personId"></app-contact>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 
-
-<div class="tablo">
-  <p-scrollpanel [style]="{ width: '100%', height: '550px' }">
-    <p-table
-      [value]="personeller"
-      [paginator]="true"
-      [rows]="10"
-      [tableStyle]="{ 'min-width': '100rem' }"
-      [rowsPerPageOptions]="[8, 12, 16]">
-      <ng-template #header>
-        <tr>
-          <th style="width:25%; color:#2f2f47">Adı</th>
-          <th style="width:25%; color:#1e1e2f">Soyadı</th>
-          <th style="width:25%; color:#1e1e2f">Açıklama</th>
-          <th style="width:25%; color:#1e1e2f">Durumu</th>
-          <th style="width:25%; color:#1e1e2f">Oluşturma tarihi</th>
-          <th style="width:25%; color:#1e1e2f">Bölüm</th>
-          <th style="width:25%; color:#1e1e2f">Şehir Adı</th>
-          <th style="width:25%; color:#1e1e2f">Birim</th>
-          <th style="width:25%; color:#1e1e2f">Doğum Tarihi</th>
-          <th style="width:25%; color:#1e1e2f">İşlem</th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-personel>
-        <tr>
-          <td>{{ personel.firstName }}</td>
-          <td>{{ personel.lastName }}</td>
-          <td>{{ personel.description }}</td>
-          <td>{{ personel.status }}</td>
-          <td>{{ personel.createDate | date: 'MM/dd/yyyy HH:mm' }}</td>
-          <td>{{ personel.bolum }}</td>
-          <td>{{ personel.city?.name }}</td>
-          <td>{{ personel.unit?.code }}</td>
-          <td>{{ personel.birthDate | date: 'MM/dd/yyyy' }}</td>
-          <td>
-            <p-button [style]="{ marginRight:'0.5rem'}" icon="pi pi-trash" (click)="confirmDelete($event,personel.id)"
-                      severity="danger"
-                      rounded title="Sil"/>
-            <p-button [style]="{ marginRight:'0.5rem'}" icon="pi pi-pencil" (click)="edit(personel)"
-                      severity="info" rounded
-                      title="Düzenle"/>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-scrollpanel>
-</div>
+  <ng-template pTemplate="footer">
+    <p-button label="İptal" severity="secondary" [outlined]="true" (onClick)="cancel()"></p-button>
+    <p-button *ngIf="!isEditButton" label="Kaydet" [loading]="saving" (onClick)="save()"></p-button>
+    <p-button *ngIf="isEditButton" label="Güncelle" [loading]="saving" (onClick)="updatePerson()"></p-button>
+  </ng-template>
+</p-dialog>

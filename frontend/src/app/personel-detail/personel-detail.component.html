@@ -1,0 +1,62 @@
+<div class="page-head">
+  <div>
+    <h2>{{ personel ? (personel.firstName + ' ' + personel.lastName) : 'Personel detayı' }}</h2>
+    <p>Özlük, iletişim ve organizasyon bilgisi.</p>
+  </div>
+  <p-button label="Listeye dön" icon="pi pi-arrow-left" severity="secondary" outlined="true" (onClick)="back()"></p-button>
+</div>
+
+<div *ngIf="loading" class="panel empty">Yükleniyor...</div>
+<div *ngIf="!loading && error" class="panel empty">{{ error }}</div>
+
+<div *ngIf="personel" class="detail-grid">
+  <section class="panel">
+    <div class="head-row">
+      <h3>Özlük</h3>
+      <span class="badge" [class.leave]="personel.employmentStatus === 'ON_LEAVE'"
+            [class.left]="personel.employmentStatus === 'LEFT'">
+        {{ statusLabel(personel.employmentStatus) }}
+      </span>
+    </div>
+    <dl>
+      <div><dt>Ad soyad</dt><dd>{{ personel.firstName }} {{ personel.lastName }}</dd></div>
+      <div><dt>Kullanıcı</dt><dd>{{ personel.userName || '-' }}</dd></div>
+      <div><dt>Bölüm</dt><dd>{{ personel.bolum || '-' }}</dd></div>
+      <div><dt>Doğum tarihi</dt><dd>{{ personel.birthDate ? (personel.birthDate | date: 'dd.MM.yyyy') : '-' }}</dd></div>
+      <div><dt>Kayıt</dt><dd>{{ personel.createDate | date: 'dd.MM.yyyy HH:mm' }}</dd></div>
+      <div class="full"><dt>Açıklama</dt><dd>{{ personel.description || '-' }}</dd></div>
+    </dl>
+    <div class="actions" *ngIf="auth.isAdmin()">
+      <p-button label="Aktif" outlined="true" (onClick)="setStatus('ACTIVE')"></p-button>
+      <p-button label="İzinde" outlined="true" (onClick)="setStatus('ON_LEAVE')"></p-button>
+      <p-button label="İşten ayrıldı" severity="danger" outlined="true" (onClick)="setStatus('LEFT')"></p-button>
+    </div>
+    <p class="note" *ngIf="!auth.isAdmin()">Bu hesapta durum değiştiremezsin.</p>
+  </section>
+
+  <section class="panel">
+    <h3>Organizasyon</h3>
+    <dl>
+      <div><dt>Şehir</dt><dd>{{ personel.city?.name || 'Şehir yok' }}</dd></div>
+      <div><dt>Birim</dt><dd>{{ personel.unit?.name || personel.unit?.code || 'Birim yok' }}</dd></div>
+    </dl>
+  </section>
+
+  <section class="panel">
+    <h3>Adresler</h3>
+    <p *ngIf="!personel.addresses?.length" class="empty">Kayıtlı adres yok.</p>
+    <ul>
+      <li *ngFor="let adres of personel.addresses">{{ adres.description }}</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <h3>İletişim</h3>
+    <p *ngIf="!personel.contacts?.length" class="empty">Kayıtlı iletişim yok.</p>
+    <ul>
+      <li *ngFor="let contact of personel.contacts">
+        <b>{{ contact.type }}</b> {{ contact.contact }}
+      </li>
+    </ul>
+  </section>
+</div>

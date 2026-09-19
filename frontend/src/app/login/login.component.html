@@ -1,0 +1,26 @@
+<p-toast/>
+<div class="login-page">
+  <div class="login-card">
+    <div class="brand">
+      <div class="mark">İK</div>
+      <div>
+        <h1>Personel IK</h1>
+        <p>İnsan kaynakları yönetim sistemi</p>
+      </div>
+    </div>
+
+    <label>Kullanıcı adı</label>
+    <input pInputText [(ngModel)]="username" placeholder="admin" (keyup.enter)="submit()"/>
+
+    <label>Şifre</label>
+    <p-password [(ngModel)]="password" [feedback]="false" [toggleMask]="true" inputStyleClass="w-full"
+                styleClass="w-full" (keyup.enter)="submit()"></p-password>
+
+    <p-button label="Giriş yap" [loading]="loading" (onClick)="submit()" styleClass="w-full login-btn"></p-button>
+
+    <div class="hint">
+      <div><b>admin</b> / Admin123! — ekleme ve düzenleme</div>
+      <div><b>user</b> / User123! — sadece görüntüleme</div>
+    </div>
+  </div>
+</div>

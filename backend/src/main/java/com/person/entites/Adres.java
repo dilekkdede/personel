@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-
 @Data
 @Entity
 @Table(name = "adres")
@@ -16,14 +15,15 @@ public class Adres implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "personel_id")
-    private Integer personelId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "personel_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "city", "unit"})
+    private Personel personel;
 
     @Column(name = "description")
     private String description;
@@ -33,6 +33,5 @@ public class Adres implements Serializable {
 
     @Column(name = "create_date")
     private Date createDate;
-
 
 }

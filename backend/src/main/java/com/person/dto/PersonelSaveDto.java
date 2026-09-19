@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import com.person.enums.EmploymentStatus;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -49,6 +51,8 @@ public class PersonelSaveDto {
     private UnitIdDto unit;
 
     private AdresSavePersonelDto adres;
+
+    private EmploymentStatus employmentStatus;
 
 
 }

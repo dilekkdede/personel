@@ -1,73 +1,56 @@
-<p-toast/>
-<p-confirmDialog></p-confirmDialog>
-<div class="header" style="color:darkblue">
-  BİRİM LİSTESİ
-  <p-button icon="pi pi-plus" title="Yeni Kayıt" [rounded]="true" [text]="true" (click)="showDialog()" severity="info"/>
-  <p-dialog header="Birim Ekle" [modal]="true" [(visible)]="visible"
-            [style]="{ width: '30rem', height: '25rem',color:'blue' }">
-    <br/>
-    <div>
-      <p-floatlabel>
-        <input [style]="{ width: '100%' }" id="Adı" pInputText [(ngModel)]="unitName"/>
-        <label for="Adı">Birim Adı</label>
-      </p-floatlabel>
-    </div>
-    <br/>
-    <div>
-      <p-floatlabel>
-        <input [style]="{ width: '100%' }" id="Plaka Kodu" pInputText [(ngModel)]="unitCode"/>
-        <label for="Plaka Kodu">Birim Kodu</label>
-      </p-floatlabel>
-    </div>
-    <div style="float:right;">
-      <p-button label="İPTAL" severity="secondary" (onClick)="cancel()"/>
-      <p-button *ngIf="!isEditButton" [style]="{ margin:'2rem'}" (onClick)="saveUnit() ">KAYDET</p-button>
-      <p-button *ngIf="isEditButton" [style]="{ margin:'2rem'}" (onClick)="updateUnit()"> GÜNCELLE</p-button>
-
-    </div>
-  </p-dialog>
-
-
+<div class="page-head">
+  <div>
+    <h2>Birimler</h2>
+    <p>Organizasyon birimleri. Personel kaydı bunlardan birine bağlanır.</p>
+  </div>
+  <p-button *ngIf="auth.isAdmin()" label="Yeni birim" icon="pi pi-plus" (onClick)="showDialog()"></p-button>
 </div>
 
-<p-scrollpanel>
-<div class="tablo">
-  <p-table
-    [value]="birimler"
-    [paginator]="true"
-    [rows]="10"
-    [tableStyle]="{ 'min-width': '100rem' }"
-    [rowsPerPageOptions]="[2, 4, 8]"
-  >
-    <ng-template #header>
+<div class="panel">
+  <p-table [value]="birimler" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]">
+    <ng-template pTemplate="header">
       <tr>
-        <th style="width:25%">ID</th>
-        <th style="width:25%">Adı</th>
-        <th style="width:25%">Kod</th>
-        <th style="width:25%">Oluşturma Tarihi</th>
+        <th>Ad</th>
+        <th>Kod</th>
+        <th>Oluşturma</th>
+        <th *ngIf="auth.isAdmin()">İşlem</th>
       </tr>
     </ng-template>
-    <ng-template #body let-unit>
+    <ng-template pTemplate="body" let-unit>
       <tr>
-        <td>{{ unit.id }}</td>
         <td>{{ unit.name }}</td>
         <td>{{ unit.code }}</td>
-        <td>{{ unit.createDate | date: 'MM/dd/yyyy HH:mm'}}</td>
-
-        <td style="padding-left: 3px; padding-right:5px">
-          <p-button icon="pi pi-trash" (click)="confirmDelete($event,unit.id)" severity="danger"
-                    rounded title="Sil"/>
+        <td>{{ unit.createDate | date: 'dd.MM.yyyy HH:mm' }}</td>
+        <td *ngIf="auth.isAdmin()" class="actions">
+          <p-button label="Düzenle" icon="pi pi-pencil" [text]="true" (onClick)="editUnit(unit)"></p-button>
+          <p-button label="Sil" icon="pi pi-trash" [text]="true" severity="danger"
+                    (onClick)="confirmDelete($event, unit.id)"></p-button>
         </td>
-
-        <td>
-          <p-button icon="pi pi-pencil" (click)="editUnit(unit)" severity="info" rounded
-                    title="Düzenle"/>
-        </td>
-
       </tr>
-
-
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="auth.isAdmin() ? 4 : 3" class="empty">Henüz birim yok. Yeni birim ile ekle.</td>
+      </tr>
     </ng-template>
   </p-table>
 </div>
-</p-scrollpanel>
+
+<p-dialog [header]="isEditButton ? 'Birim düzenle' : 'Yeni birim'" [modal]="true" [(visible)]="visible"
+          appendTo="body" [dismissableMask]="true" [style]="{width: '28rem'}">
+  <div class="form-stack">
+    <div>
+      <label>Birim adı *</label>
+      <input pInputText [(ngModel)]="unitName"/>
+    </div>
+    <div>
+      <label>Birim kodu *</label>
+      <input pInputText [(ngModel)]="unitCode"/>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="İptal" severity="secondary" [outlined]="true" (onClick)="cancel()"></p-button>
+    <p-button *ngIf="!isEditButton" label="Kaydet" [loading]="saving" (onClick)="saveUnit()"></p-button>
+    <p-button *ngIf="isEditButton" label="Güncelle" [loading]="saving" (onClick)="updateUnit()"></p-button>
+  </ng-template>
+</p-dialog>

@@ -11,7 +11,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/rest/api/unit")
-@CrossOrigin(allowedHeaders = "*", origins = "*")
 
 public class UnitController {
 

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {PersonelService} from '../services/personel.service';
 
 @Component({
   selector: 'app-report',
@@ -6,6 +7,15 @@ import { Component } from '@angular/core';
   templateUrl: './report.component.html',
   styleUrl: './report.component.css'
 })
-export class ReportComponent {
+export class ReportComponent implements OnInit {
+  unitRows: any[] = [];
+  cityRows: any[] = [];
 
+  constructor(private personelService: PersonelService) {
+  }
+
+  async ngOnInit() {
+    this.unitRows = await this.personelService.countByUnit() || [];
+    this.cityRows = await this.personelService.countByCity() || [];
+  }
 }

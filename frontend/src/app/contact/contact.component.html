@@ -2,8 +2,8 @@
   <p-button icon="pi pi-plus" label="YENİ" [rounded]="true" [text]="true"
             (click)="contactShowDialog()" severity="info"/>
 
-  <p-dialog header="Adres" [modal]="true" [(visible)]="contactDialogVisible"
-            [baseZIndex]="1000" [style]="{ width: '30rem'}">
+  <p-dialog header="İletişim" [modal]="true" [(visible)]="contactDialogVisible"
+            appendTo="body" [baseZIndex]="1000" [style]="{ width: '30rem'}">
 
     <div>
       <p-floatlabel>

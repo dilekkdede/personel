@@ -1,6 +1,7 @@
 package com.person.entites;
 
 
+import com.person.enums.EmploymentStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,6 +37,10 @@ public class Personel implements Serializable {
 
     @Column(name = "status")
     private Integer status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "employment_status")
+    private EmploymentStatus employmentStatus;
 
     @Column(name = "create_date")
     private Date createDate;

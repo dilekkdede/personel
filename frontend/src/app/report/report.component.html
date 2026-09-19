@@ -1,1 +1,54 @@
-<p>report works!</p>
+<div class="page-head">
+  <div>
+    <h2>Raporlar</h2>
+    <p>Birim ve şehir bazında personel sayıları.</p>
+  </div>
+</div>
+
+<div class="report-grid">
+  <section class="panel">
+    <h3>Birim özeti</h3>
+    <p-table [value]="unitRows">
+      <ng-template #header>
+        <tr>
+          <th>Birim kodu</th>
+          <th>Personel</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr>
+          <td>{{ row.code }}</td>
+          <td>{{ row.personSize }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="2" class="empty">Gösterilecek birim raporu yok.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+
+  <section class="panel">
+    <h3>Şehir özeti</h3>
+    <p-table [value]="cityRows">
+      <ng-template #header>
+        <tr>
+          <th>Şehir</th>
+          <th>Personel</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr>
+          <td>{{ row.name }}</td>
+          <td>{{ row.personSize }}</td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="2" class="empty">Gösterilecek şehir raporu yok.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+</div>

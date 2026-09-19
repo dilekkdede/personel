@@ -1,37 +1,26 @@
-
-.header {
-  margin-top: 35px;
-  margin-bottom: 35px;
-
-
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.tablo {
-  margin-top: 100px;
-  height: 100%;
-  display: flex;
-  position: fixed;
+.form-stack label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--muted);
 }
 
-.islem {
-/ / left: 1000 px;
-  display: flex;
-/ / justify-content: flex-end;
+.form-stack input {
   width: 100%;
 }
 
-
-.kolon {
-  float: left;
-  padding: 10px;
-  margin: 10px;
-  height: 100px;
+.actions {
+  white-space: nowrap;
 }
 
-
-.test {
-  float: right;
-
-  width: 300px;
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 28px !important;
 }
-

@@ -1,5 +1,6 @@
 package com.person.services;
 
+import com.person.dto.BulkStatusRequest;
 import com.person.dto.PersonelSaveDto;
 import com.person.dto.dtoBase.BaseResponse;
 import com.person.dto.dtoQuery.*;
@@ -13,13 +14,19 @@ public interface IPersonelServices {
     /// ////////////CRUD İŞLEMLERİ //////////////////////////
     BaseResponse save(PersonelSaveDto dto);
 
-    BaseResponse findAll();
+    BaseResponse findAll(int page, int size, String q, Long cityId, Long unitId, String bolum, String employmentStatus);
 
     BaseResponse findById(Long id);
 
     BaseResponse deleteById(Long id);
 
     BaseResponse update(Long id, PersonelSaveDto dto);
+
+    BaseResponse dashboard();
+
+    BaseResponse changeStatus(Long id, String employmentStatus);
+
+    BaseResponse bulkStatus(BulkStatusRequest request);
 
     /// ////////////////////////////////////////////////////////////////////////////////////////
 

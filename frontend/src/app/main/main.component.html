@@ -1,50 +1,69 @@
-<p-splitter [style]="{ height: '100%', width: '100%' }" layout="vertical">
-  <!-- Üst Yarım -->
+<div class="page-head">
+  <div>
+    <h2>Hoş geldin, {{ auth.currentUser()?.firstName }}</h2>
+    <p>Son kayıtlar, durum özeti ve dağılım. Yeni personel eklemek için Personel menüsünü kullan.</p>
+  </div>
+</div>
 
+<div class="kpis">
+  <article>
+    <small>Toplam</small>
+    <strong>{{ personelCount }}</strong>
+  </article>
+  <article>
+    <small>Aktif</small>
+    <strong>{{ activeCount }}</strong>
+  </article>
+  <article>
+    <small>İzinde</small>
+    <strong>{{ onLeaveCount }}</strong>
+  </article>
+  <article>
+    <small>Ayrılan</small>
+    <strong>{{ leftCount }}</strong>
+  </article>
+</div>
 
-  <ng-template #panel>
-    <p-splitter [style]="{ height: '100%', width: '100%' }" layout="horizontal">
-      <ng-template #panel>
+<div class="lists">
+  <section class="panel">
+    <h3>Son 5 kayıt</h3>
+    <p *ngIf="!latest.length" class="empty">Henüz personel yok.</p>
+    <button *ngFor="let item of latest" type="button" class="row" (click)="open(item)">
+      <b>{{ item.firstName }} {{ item.lastName }}</b>
+      <span>{{ item.unit?.name || item.bolum }}</span>
+    </button>
+  </section>
+  <section class="panel">
+    <h3>Son 7 günde eklenenler</h3>
+    <p *ngIf="!recent.length" class="empty">Son 7 günde yeni kayıt yok.</p>
+    <button *ngFor="let item of recent" type="button" class="row" (click)="open(item)">
+      <b>{{ item.firstName }} {{ item.lastName }}</b>
+      <span>{{ item.createDate | date: 'dd.MM.yyyy' }}</span>
+    </button>
+  </section>
+  <section class="panel">
+    <h3>Birimi olmayanlar</h3>
+    <p *ngIf="!withoutUnit.length" class="empty">Birimsiz personel yok.</p>
+    <button *ngFor="let item of withoutUnit" type="button" class="row" (click)="open(item)">
+      <b>{{ item.firstName }} {{ item.lastName }}</b>
+      <span>{{ item.bolum }}</span>
+    </button>
+  </section>
+</div>
 
-        <div>
-          <p-chart
-            type="bar"
-            [data]="basicData"
-            [options]="basicOptions"
-            width="800"
-            height="380"
-          >
-          </p-chart>
-        </div>
-      </ng-template>
-      <ng-template #panel>
-
-        <div>
-          <p-chart type="pie"
-                   [data]="data"
-                   [options]="options"
-                   width="700"
-                   height="370"
-
-          />
-        </div>
-      </ng-template>
-    </p-splitter>
-  </ng-template>
-
-  <!-- Alt Yarım -->
-
-  <ng-template #panel>
-    <p-splitter [style]="{ height: '100%', width: '100%' }" layout="horizontal">
-      <ng-template #panel>
-        <div class="flex items-center justify-center h-full font-bold">Panel 3</div>
-      </ng-template>
-      <ng-template #panel>
-        <div class="flex items-center justify-center h-full font-bold">Panel 4</div>
-      </ng-template>
-    </p-splitter>
-  </ng-template>
-</p-splitter>
-
-
-
+<div class="charts">
+  <section class="panel">
+    <h3>Birim bazlı dağılım</h3>
+    <div *ngIf="hasUnitData" class="chart-box">
+      <p-chart type="bar" [data]="unitChart" [options]="chartOptions"></p-chart>
+    </div>
+    <p *ngIf="!hasUnitData" class="empty">Henüz birime bağlı personel yok.</p>
+  </section>
+  <section class="panel">
+    <h3>Şehir bazlı dağılım</h3>
+    <div *ngIf="hasCityData" class="chart-box">
+      <p-chart type="doughnut" [data]="cityChart" [options]="pieOptions"></p-chart>
+    </div>
+    <p *ngIf="!hasCityData" class="empty">Henüz şehre bağlı personel yok.</p>
+  </section>
+</div>

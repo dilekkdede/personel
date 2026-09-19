@@ -1,6 +1,6 @@
 package com.person.entites;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,8 +20,10 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "personel_id")
-    private Long personelId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "personel_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "city", "unit"})
+    private Personel personel;
 
     @Column(name = "contact")
     private String contact;

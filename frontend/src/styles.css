@@ -1,2 +1,80 @@
-
 @import "primeicons/primeicons.css";
+
+:root {
+  --bg: #eef2f7;
+  --panel: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --line: #dbe3ee;
+  --sidebar: #0f172a;
+  --sidebar-text: #dbe4f0;
+  --nav-active: rgba(255, 255, 255, 0.1);
+  --shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+}
+
+html.app-dark {
+  --bg: #070b14;
+  --panel: #101826;
+  --text: #e8eef8;
+  --muted: #93a4bb;
+  --line: #1d2a3f;
+  --sidebar: #050914;
+  --sidebar-text: #d5e0f0;
+  --nav-active: rgba(45, 212, 191, 0.16);
+  --shadow: 0 16px 50px rgba(0, 0, 0, 0.35);
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.page-head h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
+
+.page-head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.w-full {
+  width: 100%;
+}
+
+html.app-compact .page-head,
+html.app-compact .content {
+  margin-bottom: 10px;
+}
+
+html.app-compact .panel {
+  padding: 10px;
+}
+
+html.app-compact .content {
+  padding: 14px;
+}

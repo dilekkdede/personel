@@ -5,8 +5,10 @@ import com.person.dto.CitySaveDto;
 import com.person.dto.dtoBase.BaseResponse;
 import com.person.entites.City;
 import com.person.enums.RecordStatus;
+import com.person.exception.ConflictException;
 import com.person.exception.ResourceNotFoundException;
 import com.person.repository.CityRepository;
+import com.person.repository.PersonelRepository;
 import com.person.services.ICityServices;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,6 +27,8 @@ public class CityServicesImpl implements ICityServices {
 
     @Autowired
     private CityRepository cityRepository;
+    @Autowired
+    private PersonelRepository personelRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -101,6 +105,9 @@ public class CityServicesImpl implements ICityServices {
             baseResponse.setData(null);
             return baseResponse;
         } else {
+            if (personelRepository.existsByCity_Id(id)) {
+                throw new ConflictException("Bu şehre bağlı personel olduğu için silinemez");
+            }
             cityRepository.delete(city.get());
             baseResponse.setStatus(200);
             baseResponse.setMessage("City delete success");

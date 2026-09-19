@@ -1,0 +1,22 @@
+.report-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.report-grid h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+.empty {
+  text-align: center;
+  color: #64748b;
+  padding: 28px !important;
+}
+
+@media (max-width: 860px) {
+  .report-grid {
+    grid-template-columns: 1fr;
+  }
+}

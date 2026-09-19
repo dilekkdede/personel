@@ -1,0 +1,40 @@
+<div class="page-head">
+  <div>
+    <h2>Ayarlar</h2>
+    <p>Tema ve görünümü buradan değiştir.</p>
+  </div>
+</div>
+
+<div class="settings-grid">
+  <section class="panel">
+    <h3>Görünüm</h3>
+    <div class="row">
+      <div>
+        <strong>Dark tema</strong>
+        <small>Varsayılan koyu arayüz. Kapatınca açık temaya geçer.</small>
+      </div>
+      <p-toggleswitch [ngModel]="theme.dark" (ngModelChange)="theme.setDark($event)"></p-toggleswitch>
+    </div>
+    <div class="row">
+      <div>
+        <strong>Sıkışık görünüm</strong>
+        <small>Tablo ve kart boşluklarını azaltır.</small>
+      </div>
+      <p-toggleswitch [ngModel]="theme.compact" (ngModelChange)="theme.setCompact($event)"></p-toggleswitch>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3>Hesap</h3>
+    <div class="account">
+      <div class="avatar">{{ (auth.currentUser()?.firstName || 'U').charAt(0) }}</div>
+      <div>
+        <strong>{{ auth.currentUser()?.firstName }} {{ auth.currentUser()?.lastName }}</strong>
+        <small>{{ auth.currentUser()?.username }} · {{ auth.isAdmin() ? 'Yönetici' : 'Görüntüleme' }}</small>
+      </div>
+    </div>
+    <p class="note" *ngIf="!auth.isAdmin()">
+      Görüntüleme hesabındasın. Ekleme ve düzenleme için admin ile gir.
+    </p>
+  </section>
+</div>

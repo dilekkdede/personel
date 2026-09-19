@@ -1,6 +1,7 @@
 package com.person.dto;
 
 
+import com.person.enums.EmploymentStatus;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -22,12 +23,15 @@ public class PersonelDto implements Serializable {
     private String userName;
     private String description;
     private Integer status;
+    private EmploymentStatus employmentStatus;
     private Date createDate;
     private String bolum;
     private Date birthDate;
     private CityInfoDto city;
     private UnitInfoDto unit;
     private AdresInfoDto adres;
+    private java.util.List<AdresDto> addresses;
+    private java.util.List<ContactDto> contacts;
 
 
 }

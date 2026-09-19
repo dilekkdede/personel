@@ -7,6 +7,7 @@
 # Postgres bu projeye ozel olmali: port 55432, database personel_dev.
 # Is / Apinizer Postgres'ine baglanma.
 
-spring.datasource.url=jdbc:postgresql://localhost:55432/personel_dev
+spring.datasource.url=jdbc:postgresql://localhost:5432/personel_dev
 spring.datasource.username=postgres
 spring.datasource.password=personel_local
+jwt.secret=personel-local-jwt-secret-key-32chars-min

@@ -1,26 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {MessageService} from 'primeng/api';
-import {PrimeNG} from 'primeng/config';
+import {Component} from '@angular/core';
+import {ThemeService} from './services/theme.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   standalone: false,
-  styleUrl: './app.component.css',
-  providers: [MessageService]
+  styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
-  constructor(private primeng: PrimeNG) {
+export class AppComponent {
+  constructor(public theme: ThemeService) {
   }
-
-  ngOnInit() {
-    this.primeng.ripple.set(true);
-  }
-
-  menuFunction() {
-    console.log("Buton tıklandı");
-  }
-
-
 }
-

@@ -10,7 +10,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/rest/api/city")
-@CrossOrigin(allowedHeaders = "*", origins = "*")
 public class CityController {
 
 

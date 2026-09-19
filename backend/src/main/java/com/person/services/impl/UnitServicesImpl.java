@@ -5,7 +5,9 @@ import com.person.dto.UnitSaveDto;
 import com.person.dto.dtoBase.BaseResponse;
 import com.person.entites.Unit;
 import com.person.enums.RecordStatus;
+import com.person.exception.ConflictException;
 import com.person.exception.ResourceNotFoundException;
+import com.person.repository.PersonelRepository;
 import com.person.repository.UnitRepository;
 import com.person.services.IUnitServices;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,8 @@ public class UnitServicesImpl implements IUnitServices {
 
     @Autowired
     private UnitRepository unitRepository;
+    @Autowired
+    private PersonelRepository personelRepository;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -89,9 +93,13 @@ public class UnitServicesImpl implements IUnitServices {
     public BaseResponse deleteById(Long id) {
 
         BaseResponse baseResponse = new BaseResponse();
-        log.info("Unit silindi");
+        if (!unitRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Birim bulunamadı");
+        }
+        if (personelRepository.existsByUnit_Id(id)) {
+            throw new ConflictException("Bu birime bağlı personel olduğu için silinemez");
+        }
         unitRepository.deleteById(id);
-
         baseResponse.setStatus(HttpStatus.OK.value());
         baseResponse.setMessage("Unit başarılı bir şekilde silindi");
         log.info("Unit silindi: {}", id);

@@ -4,6 +4,7 @@ import com.person.dto.*;
 import com.person.dto.dtoBase.BaseResponse;
 import com.person.dto.dtoQuery.*;
 import com.person.entites.*;
+import com.person.enums.EmploymentStatus;
 import com.person.enums.RecordStatus;
 import com.person.exception.ResourceNotFoundException;
 import com.person.repository.*;
@@ -12,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,7 @@ import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -68,6 +73,7 @@ public class PersonelServicesImpl implements IPersonelServices {
         personel.setCreateDate(new Date());
         personel.setBolum(dto.getBolum());
         personel.setBirthDate(dto.getBirthDate());
+        personel.setEmploymentStatus(dto.getEmploymentStatus() != null ? dto.getEmploymentStatus() : EmploymentStatus.ACTIVE);
 
 
         City city = cityRepository.findById(dto.getCity().getId())
@@ -83,7 +89,7 @@ public class PersonelServicesImpl implements IPersonelServices {
 
         if (dto.getAdres() != null && dto.getAdres().getDescription() != null) {
             Adres adres = new Adres();
-            adres.setPersonelId(dbPersonel.getId().intValue());
+            adres.setPersonel(dbPersonel);
             adres.setDescription(dto.getAdres().getDescription());
             adres.setStatus(RecordStatus.ACTIVE.getValue());
             adres.setCreateDate(new Date());
@@ -101,16 +107,30 @@ public class PersonelServicesImpl implements IPersonelServices {
     }
 
     @Override
-    public BaseResponse findAll() {
+    public BaseResponse findAll(int page, int size, String q, Long cityId, Long unitId, String bolum, String employmentStatus) {
         BaseResponse response = new BaseResponse();
+        Pageable pageable = PageRequest.of(Math.max(page, 0), Math.max(size, 1));
+        EmploymentStatus status = parseStatus(employmentStatus);
+        Page<Personel> result = personelRepository.search(
+                q == null ? "" : q.trim(),
+                cityId,
+                unitId,
+                bolum,
+                status,
+                status == EmploymentStatus.ACTIVE,
+                pageable);
 
-        List<Personel> personelList = personelRepository.findAllPersons();
+        List<PersonelDto> dtoList = result.getContent().stream().map(item -> toDto(item, false)).collect(Collectors.toList());
 
-        List<PersonelDto> dtoList = modelMapper.map(personelList, new TypeToken<List<PersonelDto>>() {
-        }.getType());
+        Map<String, Object> pageData = new LinkedHashMap<>();
+        pageData.put("content", dtoList);
+        pageData.put("totalElements", result.getTotalElements());
+        pageData.put("totalPages", result.getTotalPages());
+        pageData.put("number", result.getNumber());
+        pageData.put("size", result.getSize());
 
         response.setStatus(HttpStatus.OK.value());
-        response.setData(dtoList);
+        response.setData(pageData);
         response.setMessage("Personels found successfully");
         return response;
     }
@@ -129,7 +149,7 @@ public class PersonelServicesImpl implements IPersonelServices {
             return response;
         }
 
-        PersonelDto personelDto = modelMapper.map(findPersonel.get(), PersonelDto.class);
+        PersonelDto personelDto = toDto(findPersonel.get(), true);
         response.setStatus(HttpStatus.OK.value());
         response.setMessage("Personel found successfully");
         response.setData(personelDto);
@@ -148,30 +168,10 @@ public class PersonelServicesImpl implements IPersonelServices {
         }
 
         Personel personel = optional.get();
-
-        // Adres bağlantılarını kopar
-        List<Adres> adresList = adresRepository.findAll();
-        for (Adres adres : adresList) {
-            if (adres.getPersonelId() != null && adres.getPersonelId().equals(id.intValue())) {
-                adres.setPersonelId(null);
-                adresRepository.save(adres);
-            }
-        }
-
-        // Contact bağlantılarını kopar (örnek)
-        List<Contact> contactList = contactRepository.findAll();
-        for (Contact contact : contactList) {
-            if (contact.getPersonelId() != null && contact.getPersonelId().equals(id)) {
-                contact.setPersonelId(null);
-                contactRepository.save(contact);
-            }
-        }
-
-        // City ve Unit ilişkilerini kopar
+        adresRepository.deleteByPersonel_Id(id);
+        contactRepository.deleteByPersonel_Id(id);
         personel.setCity(null);
         personel.setUnit(null);
-
-        // Personel silinir
         personelRepository.delete(personel);
 
         response.setStatus(HttpStatus.OK.value());
@@ -222,6 +222,10 @@ public class PersonelServicesImpl implements IPersonelServices {
                 findPersonel.get().setCity(city);
             }
 
+            if (dto.getEmploymentStatus() != null) {
+                findPersonel.get().setEmploymentStatus(dto.getEmploymentStatus());
+            }
+
 
             Personel dbPersonel = personelRepository.save(findPersonel.get());
             PersonelDto dtoPersonel = modelMapper.map(dbPersonel, PersonelDto.class);
@@ -238,6 +242,107 @@ public class PersonelServicesImpl implements IPersonelServices {
         return response;
 
 
+    }
+
+    @Override
+    public BaseResponse dashboard() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -7);
+        Date weekAgo = calendar.getTime();
+
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("latest", personelRepository.findTop5ByOrderByCreateDateDesc().stream()
+                .map(item -> toDto(item, false)).collect(Collectors.toList()));
+        data.put("withoutUnit", personelRepository.findByUnitIsNull().stream()
+                .map(item -> toDto(item, false)).collect(Collectors.toList()));
+        data.put("recent", personelRepository.findByCreateDateAfterOrderByCreateDateDesc(weekAgo).stream()
+                .map(item -> toDto(item, false)).collect(Collectors.toList()));
+        long active = personelRepository.countByEmploymentStatus(EmploymentStatus.ACTIVE)
+                + personelRepository.countByEmploymentStatusIsNull();
+        data.put("activeCount", active);
+        data.put("onLeaveCount", personelRepository.countByEmploymentStatus(EmploymentStatus.ON_LEAVE));
+        data.put("leftCount", personelRepository.countByEmploymentStatus(EmploymentStatus.LEFT));
+
+        BaseResponse response = new BaseResponse();
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Dashboard");
+        response.setData(data);
+        return response;
+    }
+
+    @Override
+    public BaseResponse changeStatus(Long id, String employmentStatus) {
+        Personel personel = personelRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Personel bulunamadı"));
+        personel.setEmploymentStatus(requireStatus(employmentStatus));
+        Personel saved = personelRepository.save(personel);
+        BaseResponse response = new BaseResponse();
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Durum güncellendi");
+        response.setData(toDto(saved, false));
+        return response;
+    }
+
+    @Override
+    public BaseResponse bulkStatus(BulkStatusRequest request) {
+        List<Personel> list = personelRepository.findAllById(request.getIds());
+        for (Personel personel : list) {
+            personel.setEmploymentStatus(request.getEmploymentStatus());
+        }
+        personelRepository.saveAll(list);
+        BaseResponse response = new BaseResponse();
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage(list.size() + " personelin durumu güncellendi");
+        response.setData(list.stream().map(item -> toDto(item, false)).collect(Collectors.toList()));
+        return response;
+    }
+
+    private EmploymentStatus parseStatus(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return requireStatus(value);
+    }
+
+    private EmploymentStatus requireStatus(String value) {
+        try {
+            return EmploymentStatus.valueOf(value.trim().toUpperCase(Locale.ROOT));
+        } catch (Exception ex) {
+            throw new ResourceNotFoundException("Geçersiz durum");
+        }
+    }
+
+    private PersonelDto toDto(Personel personel, boolean detail) {
+        PersonelDto dto = modelMapper.map(personel, PersonelDto.class);
+        if (dto.getEmploymentStatus() == null) {
+            dto.setEmploymentStatus(EmploymentStatus.ACTIVE);
+        }
+        if (detail) {
+            dto.setAddresses(adresRepository.findByPersonel_Id(personel.getId()).stream().map(adres -> {
+                AdresDto adresDto = new AdresDto();
+                adresDto.setId(adres.getId());
+                adresDto.setDescription(adres.getDescription());
+                adresDto.setStatus(adres.getStatus());
+                adresDto.setCreateDate(adres.getCreateDate());
+                if (adres.getPersonel() != null) {
+                    adresDto.setPersonelId(adres.getPersonel().getId() == null ? null : adres.getPersonel().getId().intValue());
+                }
+                return adresDto;
+            }).collect(Collectors.toList()));
+            dto.setContacts(contactRepository.findByPersonel_Id(personel.getId()).stream().map(contact -> {
+                ContactDto contactDto = new ContactDto();
+                contactDto.setId(contact.getId());
+                contactDto.setContact(contact.getContact());
+                contactDto.setType(contact.getType());
+                contactDto.setStatus(contact.getStatus());
+                contactDto.setCreateDate(contact.getCreateDate());
+                if (contact.getPersonel() != null) {
+                    contactDto.setPersonelId(contact.getPersonel().getId());
+                }
+                return contactDto;
+            }).collect(Collectors.toList()));
+        }
+        return dto;
     }
 
 
