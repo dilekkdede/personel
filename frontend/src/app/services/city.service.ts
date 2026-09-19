@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import axios from 'axios';
 import {environment} from '../../environments/environment';
+import {apiBody} from './api-client';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +12,13 @@ export class CityService {
   constructor() {
   }
 
-
   async findAll() {
-    const response = await axios.get(this.baseUrl + '/city/get-all').then(function (response) {
-      return response.data.data;
-    })
-    return response;
-
+    const body = await apiBody(axios.get(this.baseUrl + '/city/get-all'));
+    return body.data;
   }
 
   async save(city: any) {
-    const response = await axios.post(this.baseUrl + '/city/save', city).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.post(this.baseUrl + '/city/save', city));
   }
 
   findById(id: number) {
@@ -32,17 +26,10 @@ export class CityService {
   }
 
   async delete(id: number) {
-    const response = await axios.delete(this.baseUrl + '/city/delete/' + id).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.delete(this.baseUrl + '/city/delete/' + id));
   }
 
-
   async update(id: number, city: any) {
-    const response = await axios.put(this.baseUrl + '/city/update/' + id, city).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.put(this.baseUrl + '/city/update/' + id, city));
   }
 }

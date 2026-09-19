@@ -5,6 +5,7 @@ import com.person.dto.CitySaveDto;
 import com.person.dto.dtoBase.BaseResponse;
 import com.person.entites.City;
 import com.person.enums.RecordStatus;
+import com.person.exception.ResourceNotFoundException;
 import com.person.repository.CityRepository;
 import com.person.services.ICityServices;
 import lombok.extern.slf4j.Slf4j;
@@ -32,19 +33,6 @@ public class CityServicesImpl implements ICityServices {
     public BaseResponse save(CitySaveDto dto) {
 
         BaseResponse response = new BaseResponse();
-        if (dto.getName() == null || dto.getName().isEmpty()) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setMessage("İsim alanı boş geçilemez");
-            response.setData(null);
-            return response;
-        }
-
-        if (dto.getCode() == null || dto.getCode().isEmpty()) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setMessage("Şehir kodu boş geçilemez");
-            response.setData(null);
-            return response;
-        }
 
         City city = new City();
         city.setName(dto.getName());
@@ -127,13 +115,12 @@ public class CityServicesImpl implements ICityServices {
     public BaseResponse update(Long id, CitySaveDto dto) {
         BaseResponse response = new BaseResponse();
 
-        Optional<City> city = cityRepository.findById(id);
-        if (city.isPresent()) {
-            city.get().setName(dto.getName());
-            city.get().setCode(dto.getCode());
-        }
+        City city = cityRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Şehir bulunamadı"));
+        city.setName(dto.getName());
+        city.setCode(dto.getCode());
 
-        City dbCity = cityRepository.save(city.get());
+        City dbCity = cityRepository.save(city);
         CityDto cityDto = modelMapper.map(dbCity, CityDto.class);
 
         response.setData(cityDto);

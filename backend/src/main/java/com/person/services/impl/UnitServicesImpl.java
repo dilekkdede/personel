@@ -5,6 +5,7 @@ import com.person.dto.UnitSaveDto;
 import com.person.dto.dtoBase.BaseResponse;
 import com.person.entites.Unit;
 import com.person.enums.RecordStatus;
+import com.person.exception.ResourceNotFoundException;
 import com.person.repository.UnitRepository;
 import com.person.services.IUnitServices;
 import lombok.extern.slf4j.Slf4j;
@@ -102,13 +103,12 @@ public class UnitServicesImpl implements IUnitServices {
 
         BaseResponse response = new BaseResponse();
 
-        Optional<Unit> findUnit = unitRepository.findById(id);
-        if (findUnit.isPresent()) {
-            findUnit.get().setName(dto.getName());
-            findUnit.get().setCode(dto.getCode());
-        }
+        Unit findUnit = unitRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Birim bulunamadı"));
+        findUnit.setName(dto.getName());
+        findUnit.setCode(dto.getCode());
 
-        Unit dbUnit = unitRepository.save(findUnit.get());
+        Unit dbUnit = unitRepository.save(findUnit);
         UnitDto dtoUnit = modelMapper.map(dbUnit, UnitDto.class);
         response.setStatus(HttpStatus.OK.value());
         response.setData(dtoUnit);

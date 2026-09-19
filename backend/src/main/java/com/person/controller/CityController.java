@@ -6,6 +6,8 @@ import com.person.services.ICityServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/rest/api/city")
 @CrossOrigin(allowedHeaders = "*", origins = "*")
@@ -17,7 +19,7 @@ public class CityController {
 
 
     @PostMapping(path = "/save")
-    public BaseResponse save(@RequestBody CitySaveDto dto) {
+    public BaseResponse save(@Valid @RequestBody CitySaveDto dto) {
         return cityService.save(dto);
     }
 
@@ -39,7 +41,7 @@ public class CityController {
     }
 
     @PutMapping(path = "/update/{id}")
-    public BaseResponse update(@PathVariable(name = "id") Long id, @RequestBody CitySaveDto dto) {
+    public BaseResponse update(@PathVariable(name = "id") Long id, @Valid @RequestBody CitySaveDto dto) {
         return cityService.update(id, dto);
     }
 

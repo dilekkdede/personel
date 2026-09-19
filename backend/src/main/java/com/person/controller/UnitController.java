@@ -7,6 +7,8 @@ import com.person.services.IUnitServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/rest/api/unit")
 @CrossOrigin(allowedHeaders = "*", origins = "*")
@@ -18,7 +20,7 @@ public class UnitController {
 
 
     @PostMapping(path = "/save")
-    public BaseResponse save(@RequestBody UnitSaveDto dto) {
+    public BaseResponse save(@Valid @RequestBody UnitSaveDto dto) {
         return unitServices.save(dto);
     }
 
@@ -40,7 +42,7 @@ public class UnitController {
     }
 
     @PutMapping(path = "/update/{id}")
-    public BaseResponse update(@PathVariable(name = "id") Long id, @RequestBody UnitSaveDto dto) {
+    public BaseResponse update(@PathVariable(name = "id") Long id, @Valid @RequestBody UnitSaveDto dto) {
         return unitServices.update(id, dto);
     }
 

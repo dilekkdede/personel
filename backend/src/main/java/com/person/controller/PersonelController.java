@@ -7,6 +7,8 @@ import com.person.services.IPersonelServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import java.text.ParseException;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class PersonelController {
 
 
     @PostMapping(path = "/save")
-    public BaseResponse save(@RequestBody PersonelSaveDto personel) {
+    public BaseResponse save(@Valid @RequestBody PersonelSaveDto personel) {
         return personelServices.save(personel);
     }
 
@@ -43,7 +45,7 @@ public class PersonelController {
 
 
     @PutMapping(path = "/update/{id}")
-    public BaseResponse updatePersonel(@PathVariable(name = "id") Long id, @RequestBody PersonelSaveDto personel) {
+    public BaseResponse updatePersonel(@PathVariable(name = "id") Long id, @Valid @RequestBody PersonelSaveDto personel) {
         return personelServices.update(id, personel);
     }
 

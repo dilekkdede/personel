@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter
@@ -15,9 +18,11 @@ import java.util.Date;
 public class PersonelSaveDto {
 
 
+    @NotBlank(message = "İsim boş olamaz")
     @Schema(example = "Ali")
     private String firstName;
 
+    @NotBlank(message = "Soyisim boş olamaz")
     @Schema(example = "Kaya")
     private String lastName;
 
@@ -27,6 +32,7 @@ public class PersonelSaveDto {
     @Schema(example = "Öğretim Görevlisi")
     private String description;
 
+    @NotBlank(message = "Bölüm boş olamaz")
     @Schema(example = "Bilgisayar Müh.")
     private String bolum;
 
@@ -34,8 +40,12 @@ public class PersonelSaveDto {
     private Date birthDate;
 
 
+    @NotNull(message = "Şehir seçilmelidir")
+    @Valid
     private CityIdDto city;
 
+    @NotNull(message = "Birim seçilmelidir")
+    @Valid
     private UnitIdDto unit;
 
     private AdresSavePersonelDto adres;

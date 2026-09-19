@@ -5,6 +5,7 @@ import com.person.dto.dtoBase.BaseResponse;
 import com.person.dto.dtoQuery.*;
 import com.person.entites.*;
 import com.person.enums.RecordStatus;
+import com.person.exception.ResourceNotFoundException;
 import com.person.repository.*;
 import com.person.services.IPersonelServices;
 import lombok.extern.slf4j.Slf4j;
@@ -57,30 +58,6 @@ public class PersonelServicesImpl implements IPersonelServices {
 
         BaseResponse response = new BaseResponse();
 
-
-        //KONTROLLER
-        if (dto.getFirstName() == null || dto.getLastName() == null) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setMessage("İsim/Soyisim alanları boş geçilemez!");
-            response.setData(null);
-            return response;
-        }
-
-        if (dto.getBolum() == null) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setMessage("Bölüm bilgisi giriniz!");
-            response.setData(null);
-            return response;
-        }
-
-        if (dto.getUnit().getId() == null || dto.getCity().getId() == null) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            response.setMessage("Unit ıd / City ıd / Adres ıd alanları boş geçilemez!");
-            response.setData(null);
-            return response;
-        }
-
-
         Personel personel = new Personel();
         personel.setFirstName(dto.getFirstName());
         personel.setLastName(dto.getLastName());
@@ -93,30 +70,27 @@ public class PersonelServicesImpl implements IPersonelServices {
         personel.setBirthDate(dto.getBirthDate());
 
 
-        Optional<City> findyCity = cityRepository.findById(dto.getCity().getId());
-        if (findyCity.isPresent()) {
-            personel.setCity(findyCity.get());
-        }
+        City city = cityRepository.findById(dto.getCity().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Şehir bulunamadı"));
+        personel.setCity(city);
 
-
-        Optional<Unit> findUnit = unitRepository.findById(dto.getUnit().getId());
-        if (findUnit.isPresent()) {
-            personel.setUnit(findUnit.get());
-        }
+        Unit unit = unitRepository.findById(dto.getUnit().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Birim bulunamadı"));
+        personel.setUnit(unit);
 
 
         Personel dbPersonel = personelRepository.save(personel);
 
-        Adres adres = new Adres();
-        adres.setPersonelId(dbPersonel.getId().intValue());
-        adres.setDescription(dto.getAdres().getDescription());
-        adres.setStatus(RecordStatus.ACTIVE.getValue());
-        adres.setCreateDate(new Date());
-
-        Adres dbAdres = adresRepository.save(adres);
+        if (dto.getAdres() != null && dto.getAdres().getDescription() != null) {
+            Adres adres = new Adres();
+            adres.setPersonelId(dbPersonel.getId().intValue());
+            adres.setDescription(dto.getAdres().getDescription());
+            adres.setStatus(RecordStatus.ACTIVE.getValue());
+            adres.setCreateDate(new Date());
+            adresRepository.save(adres);
+        }
 
         PersonelDto dtoPersonel = modelMapper.map(dbPersonel, PersonelDto.class);
-        AdresDto adresDto = modelMapper.map(dbAdres, AdresDto.class);
 
 
         response.setStatus(HttpStatus.CREATED.value());
@@ -237,14 +211,15 @@ public class PersonelServicesImpl implements IPersonelServices {
             }
 
             if (dto.getUnit() != null && dto.getUnit().getId() != null) {
-                Optional<Unit> findUnit = unitRepository.findById(dto.getUnit().getId());
-                findPersonel.get().setUnit(findUnit.get());
-
+                Unit unit = unitRepository.findById(dto.getUnit().getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Birim bulunamadı"));
+                findPersonel.get().setUnit(unit);
             }
 
             if (dto.getCity() != null && dto.getCity().getId() != null) {
-                Optional<City> findCity = cityRepository.findById(dto.getCity().getId());
-                findPersonel.get().setCity(findCity.get());
+                City city = cityRepository.findById(dto.getCity().getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Şehir bulunamadı"));
+                findPersonel.get().setCity(city);
             }
 
 

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import axios from 'axios';
 import {environment} from '../../environments/environment';
-
+import {apiBody} from './api-client';
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +13,12 @@ export class UnitService {
   }
 
   async findAll() {
-    //axios: API çağrısı yapmak için kullanılan bir kütüphanedir
-    const response = await axios.get(this.baseUrl + '/unit/get-all').then(function (response) {
-      return response.data.data;
-    })
-    return response;
+    const body = await apiBody(axios.get(this.baseUrl + '/unit/get-all'));
+    return body.data;
   }
 
   async save(unit: any) {
-    const response = await axios.post(this.baseUrl + '/unit/save', unit).then(function (response) {
-      return response.data;
-    })
-    return response;
-
+    return apiBody(axios.post(this.baseUrl + '/unit/save', unit));
   }
 
   findById(id: number) {
@@ -33,16 +26,10 @@ export class UnitService {
   }
 
   async delete(id: number) {
-    const response = await axios.delete(this.baseUrl + '/unit/delete/' + id).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.delete(this.baseUrl + '/unit/delete/' + id));
   }
 
-  async  update(id: number, unit: any) {
-    const response = await axios.put(this.baseUrl + '/unit/update/' + id, unit).then(function (response) {
-      return response.data;
-    })
-    return response;
+  async update(id: number, unit: any) {
+    return apiBody(axios.put(this.baseUrl + '/unit/update/' + id, unit));
   }
 }

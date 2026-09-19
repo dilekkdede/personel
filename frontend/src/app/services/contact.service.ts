@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import axios from 'axios';
 import {environment} from '../../environments/environment';
+import {apiBody} from './api-client';
 
 @Injectable({
   providedIn: 'root'
@@ -9,38 +10,24 @@ export class ContactService {
 
   baseUrl = environment.apiUrl;
 
-
   constructor() {
   }
 
-
   async findByIdPersonelContact(id: number) {
-    const response = await axios.get(this.baseUrl + '/contact/get-personel-ıd-contact/' + id).then(function (response) {
-      return response.data.data;
-    });
-    return response;
+    const body = await apiBody(axios.get(this.baseUrl + '/contact/get-personel-ıd-contact/' + id));
+    return body.data;
   }
 
-
   async delete(id: number) {
-    const response = await axios.delete(this.baseUrl + '/contact/delete/' + id).then(function (response) {
-      return response.data;
-    });
-    return response;
+    return apiBody(axios.delete(this.baseUrl + '/contact/delete/' + id));
   }
 
   async save(contact: any) {
-    const response = await axios.post(this.baseUrl + '/contact/save/', contact).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.post(this.baseUrl + '/contact/save/', contact));
   }
 
   async update(id: number, contact: any) {
-    const response = await axios.put(this.baseUrl + '/contact/update/' + id, contact).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.put(this.baseUrl + '/contact/update/' + id, contact));
   }
 
 }

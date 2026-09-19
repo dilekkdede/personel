@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import axios from 'axios';
 import {environment} from '../../environments/environment';
+import {apiBody} from './api-client';
 
 @Injectable({
   providedIn: 'root'
@@ -13,33 +14,20 @@ export class AddressService {
   }
 
   async findByPersonelId(id: number) {
-    const response = await axios.get(this.baseUrl + '/adres/get-personel-id/' + id).then(function (response) {
-      return response.data.data;
-    });
-    return response;
+    const body = await apiBody(axios.get(this.baseUrl + '/adres/get-personel-id/' + id));
+    return body.data;
   }
 
   async delete(id: number) {
-    const response = await axios.delete(this.baseUrl + '/adres/delete/' + id).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.delete(this.baseUrl + '/adres/delete/' + id));
   }
 
   async update(id: number, adres: any) {
-    const response = await axios.put(this.baseUrl + '/adres/update/' + id, adres).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.put(this.baseUrl + '/adres/update/' + id, adres));
   }
-
 
   async save(adres: any) {
-    const response = await axios.post(this.baseUrl + '/adres/save', adres).then(function (response) {
-      return response.data;
-    })
-    return response;
+    return apiBody(axios.post(this.baseUrl + '/adres/save', adres));
   }
-
 
 }
