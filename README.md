@@ -36,11 +36,54 @@ Tarayıcıdan giriş yapılır. Yönetici yeni çalışan ekler, birime ve şehr
 
 Personel bir şehre ve birime `ManyToOne` ile bağlıdır. Adres ve iletişim bilgisi personele aittir. API HTTP kodları (400, 401, 403, 404, 409) anlamlıdır.
 
+Proje **Docker Compose** ile çalışacak şekilde paketlenmiştir: PostgreSQL, API ve arayüz tek komutla ayağa kalkar.
+
 ---
 
-## Nasıl çalıştırılır
+## Docker ile çalıştırma
 
-**Gerekenler:** Java 17, Node 20, PostgreSQL (`personel_dev` veritabanı, varsayılan port `5432`)
+**Gerekenler:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) (macOS / Windows / Linux)
+
+Proje kökünde:
+
+```bash
+docker compose up -d --build
+docker compose ps
+```
+
+| Servis | Adres |
+|---|---|
+| Arayüz | http://localhost:4300 |
+| API | http://localhost:18080 |
+| Swagger | http://localhost:18080/swagger-ui.html |
+| PostgreSQL (host) | `localhost:5432` — veritabanı `personel_dev` |
+
+Durdurmak (veritabanı volume’da kalır):
+
+```bash
+docker compose down
+```
+
+Kod değiştirdikten sonra ilgili servisi yeniden build etmek için:
+
+```bash
+docker compose up -d --build backend   # yalnızca API
+docker compose up -d --build frontend    # yalnızca arayüz
+```
+
+Demo personel / şehir / birim verisi (API ayaktayken, isteğe bağlı):
+
+```bash
+node scripts/seed-demo.mjs
+```
+
+**Not:** `docker-compose.yml` içindeki veritabanı ayarları yerel geliştirme içindir. `application-local.properties` Git’e girmez; API image’ına da `.dockerignore` ile dahil edilmez.
+
+---
+
+## Geliştirme ortamı (IntelliJ / yerel)
+
+Java 17, Node 20 ve PostgreSQL (`personel_dev`, port `5432`) ile klasik kurulum da kullanılabilir.
 
 ```bash
 # 1) Yerel veritabanı ayarı (Git'e girmez)
@@ -102,8 +145,9 @@ H2 bellek veritabanında çalışır. Yanlış şifre 401, tokensız yazma 401, 
 ## Repo yapısı
 
 ```
-backend/     REST API
-frontend/    Angular arayüz
-scripts/     Demo veri
+backend/              REST API (Dockerfile)
+frontend/             Angular arayüz (Dockerfile, nginx.conf)
+docker-compose.yml    db + backend + frontend
+scripts/              Demo veri
 ```
 
