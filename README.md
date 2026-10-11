@@ -73,10 +73,10 @@ Uygulama `8080` kullanmaz.
 
 İlk açılışta otomatik oluşur:
 
-| Kullanıcı | Şifre | Rol |
+| Kullanıcı | Şifre | Yetki |
 |---|---|---|
-| `admin` | `Admin123!` | Yönetici |
-| `user` | `User123!` | Görüntüleme |
+| `admin` | `Admin123!` | Ekleme ve düzenleme |
+| `user` | `User123!` | Sadece görüntüleme |
 
 Listeyi doldurmak için (API açıkken):
 

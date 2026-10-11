@@ -41,7 +41,7 @@ h1 {
   font-size: 22px;
 }
 
-p, label, .hint {
+p, label {
   color: #9fb0c8;
 }
 
@@ -51,17 +51,25 @@ label {
   font-size: 13px;
 }
 
+.login-card > input[pInputText] {
+  margin-bottom: 4px;
+}
+
+.login-card > input[pInputText] + label {
+  margin-top: 20px;
+}
+
 input, :host ::ng-deep .p-password,
 :host ::ng-deep .p-password input {
   width: 100%;
 }
 
-.login-btn {
-  margin-top: 22px;
+.login-card > p-password {
+  display: block;
+  margin-bottom: 6px;
 }
 
-.hint {
+.login-card > p-button {
+  display: block;
   margin-top: 22px;
-  font-size: 12px;
-  line-height: 1.7;
 }
