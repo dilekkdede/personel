@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: personel-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: personel_local
+      POSTGRES_DB: personel_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    image: personel-api:1
+    container_name: personel-api
+    ports:
+      - "18080:18080"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: personel_dev
+      DB_USERNAME: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/personel_dev
+      SPRING_DATASOURCE_PASSWORD: personel_local
+      JWT_SECRET: personel-local-jwt-secret-key-32chars-min
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    image: personel-web:1
+    container_name: personel-web
+    ports:
+      - "4300:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
